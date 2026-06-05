@@ -10,7 +10,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-container">
       <h1 class="logo">Smart Tech</h1>
@@ -65,10 +64,163 @@
                     </td>
                     <td class="date-col">June 1, 2026</td>
                 </tr>
+
+                <tr>
+                    <td class="product-cell">
+                        <img src="../categ/pictures/GIGABYTE RTX 4090.jpg" 
+                             alt="RTX 4090" 
+                             class="product-img">
+                        <div class="product-info">
+                            <strong>GIGABYTE GeForce RTX 4090 D 24GB WINDFORCE [CDM]</strong>
+                        </div>
+                    </td>
+                    <td>WINDFORCE CDM</td>
+                    <td class="qty-col">1</td>
+                    <td class="price-col">₱5,000</td>
+                    <td class="status-col">
+                        <span class="status cancel">Shipped</span>
+                    </td>
+                    <td class="date-col">June 1, 2026</td>
+                </tr>
+
+                <tr>    
+                    <td class="product-cell">
+                        <img src="../categ/pictures/GIGABYTE RTX 4090.jpg" 
+                             alt="RTX 4090" 
+                             class="product-img">
+                        <div class="product-info">
+                            <strong>GIGABYTE GeForce RTX 4090 D 24GB WINDFORCE [CDM]</strong>
+                        </div>
+                    </td>
+                    <td>WINDFORCE CDM</td>
+                    <td class="qty-col">1</td>
+                    <td class="price-col">₱5,000</td>
+                    <td class="status-col">
+                        <span class="status delivered" style="display: none;">Delivered</span>
+                        <button type="button" class="review-btn" onclick="openReviewModal()">
+                            <i class="fa-solid fa-comment"></i> Write Review
+                        </button>
+                    </td>
+                    <td class="date-col">May 25, 2026</td>
+                </tr>
             </tbody>
         </table>
+    </div>  
+  </div>
+
+  <div class="review-modal-overlay" id="reviewModal">
+    <div class="review-modal-card">
+      <div class="modal-header">
+        <h2>Write a Review</h2>
+        <button class="close-modal-btn" onclick="closeReviewModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-product-name">GIGABYTE GeForce RTX 4090 D 24GB WINDFORCE [CDM]</p>
+    <!--
+        <div class="rating-picker">
+          <label>Your Rating</label>
+          <div class="stars">
+            <i class="fa-regular fa-star" onclick="setRating(1)"></i>
+            <i class="fa-regular fa-star" onclick="setRating(2)"></i>
+            <i class="fa-regular fa-star" onclick="setRating(3)"></i>
+            <i class="fa-regular fa-star" onclick="setRating(4)"></i>
+            <i class="fa-regular fa-star" onclick="setRating(5)"></i>
+          </div>
+        </div>
+    -->
+        <div class="comment-field-container">
+          <label for="reviewComment">Your Feedback</label>
+          <textarea id="reviewComment" placeholder="Share your experience with this product... Describe item variations, performance, or packaging quality." rows="5"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeReviewModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitReviewForm()">Submit Review</button>
+      </div>
     </div>
-</div>
+  </div>
+
+<script>
+// Auto show/hide review button based on status constraints
+document.querySelectorAll('.status-col').forEach(col => {
+    const statusSpan = col.querySelector('.status');
+    const reviewBtn = col.querySelector('.review-btn');
+
+    if (statusSpan && reviewBtn) {
+        if (statusSpan.classList.contains('delivered')) {
+            statusSpan.style.display = 'none';
+            reviewBtn.style.display = 'inline-flex';
+        } else {
+            reviewBtn.style.display = 'none';
+            statusSpan.style.display = 'inline-flex';
+        }
+    }
+});
+
+// Modal Pop-up Control Logic
+function openReviewModal() {
+    const modal = document.getElementById('reviewModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevents scrolling on background page
+}
+
+function closeReviewModal() {
+    const modal = document.getElementById('reviewModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Restores scrolling
+    
+    // Clear inputs on close
+    document.getElementById('reviewComment').value = '';
+    resetStars();
+}
+
+// Simple star visual toggler helper logic
+let selectedRating = 0;
+function setRating(rating) {
+    selectedRating = rating;
+    const stars = document.querySelectorAll('.rating-picker .stars i');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.remove('fa-regular');
+            star.classList.add('fa-solid');
+        } else {
+            star.classList.remove('fa-solid');
+            star.classList.add('fa-regular');
+        }
+    });
+}
+//=======================
+//function resetStars() {
+//    selectedRating = 0;
+//    const stars = document.querySelectorAll('.rating-picker .stars i');
+//    stars.forEach((star) => {
+//        star.classList.remove('fa-solid');
+//        star.classList.add('fa-regular');
+//    });
+//}
+
+// Handler simulation when submit review comment button clicked
+function submitReviewForm() {
+    const comment = document.getElementById('reviewComment').value.trim();
+    if (!comment) {
+        alert('Please write down your feedback comment holder first.');
+        return;
+    }
+
+    alert('Thank you for your feedback! Review processed.');
+    closeReviewModal();
+}
+
+// Close window safely if background overlay clicked directly
+window.onclick = function(event) {
+    const modal = document.getElementById('reviewModal');
+    if (event.target === modal) {
+        closeReviewModal();
+    }
+}
+</script>
 
 </body>
 </html>

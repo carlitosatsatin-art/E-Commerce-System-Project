@@ -21,12 +21,21 @@
       <a href="adminOrders.html"    class="sb-item"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
       <a href="adminUsers.html"     class="sb-item"><i class="fa-solid fa-users"></i> Customers</a>
     </div>
-    <div class="sb-bottom">
-      <div class="admin-badge">
-        <div class="admin-av">A</div>
-        <div class="admin-info">Admin <span>smarttech@admin.com</span></div>
-      </div>
+      <div class="sb-bottom">
+    <!-- 1. Context Popover Container for Logout Action -->
+    <div class="profile-popover-menu" id="profileMenu">
+      <button type="button" class="popover-item logout-action" onclick="handleLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Log Out
+      </button>
     </div>
+
+    <!-- 2. Interactive Profile Badge Trigger Area -->
+    <div class="admin-badge" id="profileMenuTrigger">
+      <div class="admin-av">A</div>
+      <div class="admin-info">Admin <span>smarttech@admin.com</span></div>
+      <i class="fa-solid fa-ellipsis-vertical profile-menu-dots"></i>
+    </div>
+  </div>
   </div>
 
   <!-- Main Content -->
@@ -35,7 +44,53 @@
       <div class="topbar-title">Products</div>
       <div class="topbar-right">
         <div class="date-chip"><i class="fa-solid fa-calendar" style="margin-right:6px;"></i>May 2026</div>
-        <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+        <div class="notif-wrapper">
+  <!-- The bell icon trigger button -->
+  <div class="notif-btn" id="notifTrigger">
+    <i class="fa-solid fa-bell"></i>
+    <div class="notif-dot"></div>
+  </div>
+
+  <!-- Small Floating Scrollable Notifications Center Window Container -->
+  <div class="notif-dropdown-window" id="notifDropdown">
+    <div class="nd-header">
+      <h3>Notifications</h3>
+      <button type="button" class="nd-mark-read-btn">Mark all read</button>
+    </div>
+    
+    <!-- Scrollable Notification Feed -->
+    <div class="nd-body-scroller">
+      <div class="nd-item unread">
+        <div class="nd-icon purple"><i class="fa-solid fa-cart-shopping"></i></div>
+        <div class="nd-content">
+          <p>New order received <strong>#ST-9482</strong> from John D.</p>
+          <span class="nd-time">2 mins ago</span>
+        </div>
+      </div>
+      <div class="nd-item unread">
+        <div class="nd-icon amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="nd-content">
+          <p>Stock Alert: <strong>Ryzen 9 7950X</strong> is down to 2 units.</p>
+          <span class="nd-time">1 hr ago</span>
+        </div>
+      </div>
+      <div class="nd-item">
+        <div class="nd-icon green"><i class="fa-solid fa-peso-sign"></i></div>
+        <div class="nd-content">
+          <p>Daily sales payout total reached target goal of ₱80k.</p>
+          <span class="nd-time">5 hrs ago</span>
+        </div>
+      </div>
+      <div class="nd-item">
+        <div class="nd-icon blue"><i class="fa-solid fa-user-plus"></i></div>
+        <div class="nd-content">
+          <p>New customer account verified: <strong>Maria S.</strong></p>
+          <span class="nd-time">1 day ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
       </div>
     </div>
 
@@ -85,6 +140,7 @@
             <option>Storage</option>
             <option>PSU</option>
             <option>Cooling</option>
+            <option>Accessories</option>
           </select>
           <div style="margin-left:auto;">
             <button class="btn-primary" onclick="openModal()">
@@ -154,6 +210,7 @@
             <option>Storage</option>
             <option>PSU</option>
             <option>Cooling</option>
+            <option>Accessories</option>
           </select>
         </div>
         <div class="form-group">
@@ -362,6 +419,47 @@
 
   // Initial render
   renderTable(products);
+  
+  // Get elements from the DOM
+  const notifTrigger = document.getElementById('notifTrigger');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const profileTrigger = document.getElementById('profileMenuTrigger');
+  const profileMenu = document.getElementById('profileMenu');
+
+  // Toggle Notification Center Dropdown
+  if (notifTrigger && notifDropdown) {
+    notifTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.toggle('show');
+      if (profileMenu) profileMenu.classList.remove('show'); // Hide profile if open
+    });
+  }
+
+  // Toggle Profile Popover Menu
+  if (profileTrigger && profileMenu) {
+    profileTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileMenu.classList.toggle('show');
+      if (notifDropdown) notifDropdown.classList.remove('show'); // Hide notifications if open
+    });
+  }
+
+  // Close active dropdowns automatically if clicking anywhere outside them
+  document.addEventListener('click', (e) => {
+    if (notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifTrigger) {
+      notifDropdown.classList.remove('show');
+    }
+    if (profileMenu && !profileMenu.contains(e.target) && !profileTrigger.contains(e.target)) {
+      profileMenu.classList.remove('show');
+    }
+  });
+
+  // Log out verification confirmation action
+  function handleLogout() {
+    if (confirm('Are you sure you want to log out of the admin panel?')) {
+      window.location.href = 'login.html';
+    }
+  }
 </script>
 </body>
 </html>

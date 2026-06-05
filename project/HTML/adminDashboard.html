@@ -11,37 +11,114 @@
 <body>
 <div class="admin-layout">
 
-  <!-- Sidebar -->
   <div class="sidebar">
     <div class="sb-logo">Smart Tech <span>Admin Panel</span></div>
     <div class="sb-nav">
       <div class="sb-label">Main</div>
-      <a href="adminDashboard.html" class="sb-item active"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-      <a href="adminProducts.html"  class="sb-item"><i class="fa-solid fa-box"></i> Products</a>
-      <a href="adminOrders.html"    class="sb-item"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
-      <a href="adminUsers.html"     class="sb-item"><i class="fa-solid fa-users"></i> Customers</a>
+      <a href="adminDashboard.html" class="sb-item active"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="adminProducts.html"  class="sb-item"><i class="fa-solid fa-box"></i> <span>Products</span></a>
+      <a href="adminOrders.html"    class="sb-item"><i class="fa-solid fa-cart-shopping"></i> <span>Orders</span></a>
+      <a href="adminUsers.html"     class="sb-item"><i class="fa-solid fa-users"></i> <span>Customers</span></a>
     </div>
+    
     <div class="sb-bottom">
-      <div class="admin-badge">
+      <div class="profile-popover-menu" id="profileMenu">
+        <button type="button" class="popover-item logout-action" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        </button>
+      </div>
+
+      <div class="admin-badge" id="profileMenuTrigger">
         <div class="admin-av">A</div>
         <div class="admin-info">Admin <span>smarttech@admin.com</span></div>
+        <i class="fa-solid fa-ellipsis-vertical profile-menu-dots"></i>
       </div>
     </div>
   </div>
 
-  <!-- Main -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-title">Dashboard</div>
       <div class="topbar-right">
         <div class="date-chip"><i class="fa-solid fa-calendar" style="margin-right:6px;"></i>May 2026</div>
-        <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+        
+        <div class="notif-wrapper">
+          <div class="notif-btn" id="notifTrigger">
+            <i class="fa-solid fa-bell"></i>
+            <div class="notif-dot"></div>
+          </div>
+
+          <div class="notif-dropdown-window" id="notifDropdown">
+            <div class="nd-header">
+              <h3>Notifications</h3>
+              <button type="button" class="nd-mark-read-btn">Mark all read</button>
+            </div>
+            <div class="nd-body-scroller">
+              <div class="nd-item unread">
+                <div class="nd-icon purple"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div class="nd-content">
+                  <p>New order received <strong>#ST-9482</strong> from John D.</p>
+                  <span class="nd-time">2 mins ago</span>
+                </div>
+              </div>
+              <div class="nd-item unread">
+                <div class="nd-icon amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="nd-content">
+                  <p>Stock Alert: <strong>Ryzen 9 7950X</strong> is down to 2 units.</p>
+                  <span class="nd-time">1 hr ago</span>
+                </div>
+              </div>
+              <div class="nd-item">
+                <div class="nd-icon green"><i class="fa-solid fa-peso-sign"></i></div>
+                <div class="nd-content">
+                  <p>Daily sales payout total reached target goal of ₱80k.</p>
+                  <span class="nd-time">5 hrs ago</span>
+                </div>
+              </div>
+              <div class="nd-item">
+                <div class="nd-icon blue"><i class="fa-solid fa-user-plus"></i></div>
+                <div class="nd-content">
+                  <p>New customer account verified: <strong>Maria S.</strong></p>
+                  <span class="nd-time">1 day ago</span>
+                </div>
+              </div>
+              <div class="nd-item">
+                <div class="nd-icon purple"><i class="fa-solid fa-box-open"></i></div>
+                <div class="nd-content">
+                  <p>Batch replenishment inventory update processed.</p>
+                  <span class="nd-time">2 days ago</span>
+                </div>
+              </div>
+              <div class="nd-item">
+                <div class="nd-icon purple"><i class="fa-solid fa-box-open"></i></div>
+                <div class="nd-content">
+                  <p>Batch replenishment inventory update processed.</p>
+                  <span class="nd-time">2 days ago</span>
+                </div>
+              </div>
+              <div class="nd-item">
+                <div class="nd-icon purple"><i class="fa-solid fa-box-open"></i></div>
+                <div class="nd-content">
+                  <p>Batch replenishment inventory update processed.</p>
+                  <span class="nd-time">2 days ago</span>
+                </div>
+              </div>
+              <div class="nd-item">
+                <div class="nd-icon purple"><i class="fa-solid fa-box-open"></i></div>
+                <div class="nd-content">
+                  <p>Batch replenishment inventory update processed.</p>
+                  <span class="nd-time">2 days ago</span>
+                </div>
+              </div>
+            </div>
+            <!--<a href="allNotifications.html" class="nd-footer-link">View all updates</a>-->
+          </div>
+        </div>
+
       </div>
     </div>
 
     <div class="content">
-
-      <!-- Stat Cards -->
       <div class="stat-grid">
         <div class="stat-card">
           <div class="stat-icon ic-purple"><i class="fa-solid fa-peso-sign"></i></div>
@@ -69,10 +146,7 @@
         </div>
       </div>
 
-      <!-- Chart + Recent Orders -->
-      <div class="bottom-row">
-
-        <!-- Sales Chart -->
+      <div class="bottom-row" style="display: grid; grid-template-columns: 1.6fr 1.4fr; gap: 24px;">
         <div class="card">
           <div class="card-head">
             <div class="card-title">Sales Overview</div>
@@ -90,83 +164,69 @@
                 Monthly sales: Jan ₱38k, Feb ₱45k, Mar ₱52k, Apr ₱61k, May ₱88.5k.
               </canvas>
             </div>
-            <div class="chart-legend">
-              <span style="display:flex;align-items:center;gap:5px;"><span class="legend-dot" style="background:#4E0B99;"></span>Sales (₱)</span>
-              <span style="display:flex;align-items:center;gap:5px;"><span class="legend-dot" style="background:#d8b4fe;"></span>Target (₱)</span>
+            <div class="chart-legend" style="display: flex; gap: 16px; margin-top: 14px; font-size: 12px; color: #6b7280; justify-content: center;">
+              <span style="display:flex;align-items:center;gap:5px;"><span class="legend-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4E0B99;"></span>Sales (₱)</span>
+              <span style="display:flex;align-items:center;gap:5px;"><span class="legend-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d8b4fe;"></span>Target (₱)</span>
             </div>
           </div>
         </div>
 
-        <!-- Recent Orders -->
         <div class="card">
           <div class="card-head">
             <div class="card-title">Recent Orders</div>
           </div>
-          <div class="order-row">
-            <div class="order-thumb"><i class="fa-solid fa-microchip"></i></div>
-            <div>
-              <div class="order-name">RTX 4090 Windforce</div>
-              <div class="order-meta">John D. · 2 hrs ago</div>
+          <div style="padding: 8px 20px 20px;">
+            <div class="order-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid #f5f0ff;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="order-thumb" style="width:36px;height:36px;border-radius:8px;background:#f3e8ff;color:#4E0B99;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-microchip"></i></div>
+                <div>
+                  <div class="order-name" style="font-size:13px;font-weight:600;color:#1f2937;">RTX 4090 Windforce</div>
+                  <div class="order-meta" style="font-size:11px;color:#9ca3af;">John D. · 2 hrs ago</div>
+                </div>
+              </div>
+              <div class="order-right" style="text-align: right;">
+                <div class="order-price" style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:2px;">₱5,000</div>
+                <span class="pill pill-shipped">Shipped</span>
+              </div>
             </div>
-            <div class="order-right">
-              <div class="order-price">₱5,000</div>
-              <span class="pill pill-shipped">Shipped</span>
+            <div class="order-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid #f5f0ff;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="order-thumb" style="width:36px;height:36px;border-radius:8px;background:#d1fae5;color:#059669;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-cpu"></i></div>
+                <div>
+                  <div class="order-name" style="font-size:13px;font-weight:600;color:#1f2937;">AMD Ryzen 9 7950X</div>
+                  <div class="order-meta" style="font-size:11px;color:#9ca3af;">Maria S. · 5 hrs ago</div>
+                </div>
+              </div>
+              <div class="order-right" style="text-align: right;">
+                <div class="order-price" style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:2px;">₱28,000</div>
+                <span class="pill pill-process">Processing</span>
+              </div>
             </div>
+            <div class="order-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid #f5f0ff;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="order-thumb" style="width:36px;height:36px;border-radius:8px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-memory"></i></div>
+                <div>
+                  <div class="order-name" style="font-size:13px;font-weight:600;color:#1f2937;">Corsair 32GB DDR5</div>
+                  <div class="order-meta" style="font-size:11px;color:#9ca3af;">Carlo R. · 1 day ago</div>
+                </div>
+              </div>
+              <div class="order-right" style="text-align: right;">
+                <div class="order-price" style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:2px;">₱12,500</div>
+                <span class="pill pill-pending">Pending</span>
+              </div>
+            </div>
+            <a href="adminOrders.html" class="view-all-link" style="display:block;text-align:center;font-size:12px;color:#4E0B99;font-weight:600;text-decoration:none;margin-top:16px;">View all orders →</a>
           </div>
-          <div class="order-row">
-            <div class="order-thumb"><i class="fa-solid fa-cpu"></i></div>
-            <div>
-              <div class="order-name">AMD Ryzen 9 7950X</div>
-              <div class="order-meta">Maria S. · 5 hrs ago</div>
-            </div>
-            <div class="order-right">
-              <div class="order-price">₱28,000</div>
-              <span class="pill pill-process">Processing</span>
-            </div>
-          </div>
-          <div class="order-row">
-            <div class="order-thumb"><i class="fa-solid fa-memory"></i></div>
-            <div>
-              <div class="order-name">Corsair 32GB DDR5</div>
-              <div class="order-meta">Carlo R. · 1 day ago</div>
-            </div>
-            <div class="order-right">
-              <div class="order-price">₱12,500</div>
-              <span class="pill pill-pending">Pending</span>
-            </div>
-          </div>
-          <div class="order-row">
-            <div class="order-thumb"><i class="fa-solid fa-desktop"></i></div>
-            <div>
-              <div class="order-name">ASUS ROG Strix B650E</div>
-              <div class="order-meta">Ana L. · 1 day ago</div>
-            </div>
-            <div class="order-right">
-              <div class="order-price">₱18,000</div>
-              <span class="pill pill-shipped">Shipped</span>
-            </div>
-          </div>
-          <div class="order-row">
-            <div class="order-thumb"><i class="fa-solid fa-bolt"></i></div>
-            <div>
-              <div class="order-name">Seasonic 850W Gold</div>
-              <div class="order-meta">Ben T. · 2 days ago</div>
-            </div>
-            <div class="order-right">
-              <div class="order-price">₱7,200</div>
-              <span class="pill pill-process">Processing</span>
-            </div>
-          </div>
-          <a href="admin-orders.html" class="view-all-link">View all orders →</a>
         </div>
-
       </div>
+
     </div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+  // Initial Chart Generation Setup
   new Chart(document.getElementById('salesChart'), {
     type: 'bar',
     data: {
@@ -195,9 +255,7 @@
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: {
-          callbacks: { label: ctx => ' ₱' + ctx.raw.toLocaleString() }
-        }
+        tooltip: { callbacks: { label: ctx => ' ₱' + ctx.raw.toLocaleString() } }
       },
       scales: {
         x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#9ca3af' } },
@@ -213,6 +271,43 @@
     }
   });
 
+  // Toggles for UI elements
+  const notifTrigger = document.getElementById('notifTrigger');
+  const notifDropdown = document.getElementById('notifDropdown');
+  const profileTrigger = document.getElementById('profileMenuTrigger');
+  const profileMenu = document.getElementById('profileMenu');
+
+  // Toggle Notification Center Window Box
+  notifTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notifDropdown.classList.toggle('show');
+    profileMenu.classList.remove('show'); // Auto collapse profile menu if active
+  });
+
+  // Toggle Profile Badge Dropdown Logout menu
+  profileTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileMenu.classList.toggle('show');
+    notifDropdown.classList.remove('show'); // Auto collapse notification panel if active
+  });
+
+  // Structural Event Listener capturing outside body workspace layout clicks to safely hide active panels
+  document.addEventListener('click', (e) => {
+    if (!notifDropdown.contains(e.target) && e.target !== notifTrigger) {
+      notifDropdown.classList.remove('show');
+    }
+    if (!profileMenu.contains(e.target) && !profileTrigger.contains(e.target)) {
+      profileMenu.classList.remove('show');
+    }
+  });
+
+  function handleLogout() {
+    if (confirm('Are you sure you want to log out of the admin panel?')) {
+      window.location.href = 'login.html'; // Set redirection route
+    }
+  }
+
+  // Handle active class changes across filter header buttons
   document.querySelectorAll('.pt').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.pt').forEach(b => b.classList.remove('active'));

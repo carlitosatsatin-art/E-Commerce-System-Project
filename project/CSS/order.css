@@ -1,4 +1,4 @@
-/* ==================== ORDERS PAGE ==================== */
+/* ==================== ORDERS PAGE Layout ==================== */
 .orders-page {
   max-width: 1350px;
   margin: 40px auto;
@@ -12,7 +12,7 @@
   margin-bottom: 30px;
 }
 
-/* Main Container */
+/* Main Table Container box styling */
 .orders-container {
   background: white;
   border-radius: 16px;
@@ -20,7 +20,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
-/* Table */
+/* Grid & Table Properties */
 .orders-table {
   width: 100%;
   border-collapse: collapse;
@@ -30,23 +30,25 @@
   background: #f8f5ff;
 }
 
+/* Base headers to center-align automatically to mirror column layouts */
 .orders-table th {
   padding: 18px 24px;
-  text-align: left;
+  text-align: center;
   color: #6B21A8;
   font-weight: 600;
   font-size: 1.05rem;
   white-space: nowrap;
 }
 
-.orders-table th:nth-child(1) { width: 48%; }
-.orders-table th:nth-child(2) { width: 14%; }
+/* Column Dimensions configuration */
+.orders-table th:nth-child(1) { width: 42%; text-align: left; } /* Keep Product title left aligned */
+.orders-table th:nth-child(2) { width: 12%; }
 .orders-table th:nth-child(3) { width: 8%; }
-.orders-table th:nth-child(4) { width: 12%; }
-.orders-table th:nth-child(5) { width: 10%; }
-.orders-table th:nth-child(6) { width: 14%; }
+.orders-table th:nth-child(4) { width: 10%; }
+.orders-table th:nth-child(5) { width: 18%; }
+.orders-table th:nth-child(6) { width: 10%; }
 
-/* Table Body */
+/* Row Content Layout elements */
 .orders-table td {
   padding: 28px 24px;
   border-bottom: 1px solid #f0e6ff;
@@ -57,14 +59,7 @@
   text-align: center;
 }
 
-.orders-table td.price-col,
-.orders-table td.date-col {
-  text-align: right;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-/* Product Cell */
+/* Product Structural Frame */
 .product-cell {
   display: flex;
   align-items: center;
@@ -81,19 +76,30 @@
   flex-shrink: 0;
 }
 
-.product-name strong {
+.product-info strong {
   font-size: 1.1rem;
   line-height: 1.5;
   color: #1f2937;
 }
 
-/* Status */
+/* ==================== STATUS COLUMN ==================== */
+.status-col {
+  text-align: center; 
+  vertical-align: middle;
+}
+
+/* Status Badges Base rulesets */
 .status {
-  padding: 8px 22px;
+  padding: 10px 28px;
   border-radius: 50px;
   font-size: 0.97rem;
   font-weight: 600;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-width: 130px;
+  margin: 0 auto;
 }
 
 .status.shipped {
@@ -101,7 +107,216 @@
   color: white;
 }
 
-/* ==================== FIXED RESPONSIVE RULES ==================== */
+.status.delivered {
+  background: #6B21A8;
+  color: white;
+}
+
+/* Action Review Interaction Component */
+.review-btn {
+  background: #6B21A8;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  justify-content: center;
+  min-width: 170px;
+  margin: 0 auto; 
+}
+
+.review-btn:hover {
+  background: #5b1b94;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(107, 33, 168, 0.3);
+}
+
+.review-btn:active {
+  transform: scale(0.96);
+}
+
+/* ==================== REVIEW MODAL POPUP BACKGROUND WINDOW ==================== */
+.review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Smooth dim blur effect */
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000; /* Stays above navbar layout layer */
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.review-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Main Interactive Card Content */
+.review-modal-card {
+  background: white;
+  width: 100%;
+  max-width: 580px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(107, 33, 168, 0.15);
+  overflow: hidden;
+  padding: 28px;
+  transform: translateY(20px) scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.review-modal-overlay.active .review-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Header Sections inside popup card */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0e6ff;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6B21A8;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  color: #6B21A8;
+}
+
+/* Modal Core Input Fields Body Layout */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-product-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  background: #f8f5ff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  line-height: 1.4;
+}
+
+/* Star selection block alignment */
+.rating-picker label,
+.comment-field-container label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.rating-picker .stars {
+  display: flex;
+  gap: 8px;
+}
+
+.rating-picker .stars i {
+  font-size: 1.6rem;
+  color: #fbbf24; /* Golden star palette blend */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.rating-picker .stars i:hover {
+  transform: scale(1.15);
+}
+
+/* Text Input holder field */
+.comment-field-container textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.98rem;
+  color: #1f2937;
+  outline: none;
+  resize: vertical;
+  background-color: #faf9ff;
+  transition: all 0.3s ease;
+}
+
+.comment-field-container textarea:focus {
+  border-color: #6B21A8;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(107, 33, 168, 0.08);
+}
+
+/* Action Trigger Footers wrapper block layout rules */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  border-top: 1px solid #f0e6ff;
+  padding-top: 20px;
+}
+
+.modal-footer button {
+  padding: 12px 24px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: none;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.btn-submit {
+  background: #6B21A8;
+  color: white;
+  border: none;
+}
+
+.btn-submit:hover {
+  background: #5b1b94;
+  box-shadow: 0 4px 12px rgba(107, 33, 168, 0.2);
+}
+
+/* ==================== RESPONSIVE QUERIES ==================== */
 @media (max-width: 1100px) {
   .product-img {
     width: 180px;
@@ -120,5 +335,14 @@
     width: 100%;
     max-width: 280px;
     height: auto;
+  }
+
+  .review-btn, .status {
+    min-width: 150px;
+  }
+
+  .review-modal-card {
+    margin: 0 16px;
+    padding: 20px;
   }
 }

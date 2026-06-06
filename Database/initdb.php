@@ -27,8 +27,6 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NULL,
     address TEXT NULL,
-    gender ENUM('Male', 'Female', 'Other') NULL,
-    date_of_birth DATE NULL,
     profile_pic VARCHAR(255) NULL,
     role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

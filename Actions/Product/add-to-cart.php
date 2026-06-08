@@ -9,6 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $quantity = $_POST['quantity'];
         $user_id = $_SESSION['user_id'];
 
+        //Check if stock is sufficient
+        $sql = "SELECT stock FROM products WHERE product_id = ?";
+        $product = runQuery($pdo, $sql, [$product_id])->fetch();
+        if (!$product || $product['stock'] < $quantity) {
+            echo json_encode(['success' => false, 'error' => 'Insufficient stock available.']);
+            exit;
+        }
+
         // Check if product is already in cart
         $sql = "SELECT * FROM cart WHERE user_id = ? AND product_id = ?";
         $existingItem = runQuery($pdo, $sql, [$user_id, $product_id])->fetch();

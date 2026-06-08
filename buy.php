@@ -1,8 +1,13 @@
 <?php
 session_start();
 require_once 'Database/runQuery.php';
-$sql = "SELECT c.cart_id, c.quantity, p.product_id, p.product_name, p.price FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.user_id = ? ORDER BY c.created_at DESC;";
+$sql = "SELECT c.cart_id, c.quantity, p.product_id, p.product_name, p.price, p.image FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.user_id = ? ORDER BY c.created_at DESC;";
 $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
+if (empty($cartItems)) {
+  header('Location: cart.php');
+  exit;
+}
+$totalPrice = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,11 +29,6 @@ $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
   <nav class="navbar">
     <div class="nav-container">
       <h1 class="logo">Smart Tech</h1>
-
-      <div class="search-container">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Search" class="search-input">
-      </div>
 
       <div class="nav-links">
         <a href="home.php">Home</a>
@@ -65,7 +65,7 @@ $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
         <a href="User/address.php" class="change-address-btn">Change address</a>
       </div>
 
-      <a href="#" class="checkout-btn" onclick="placeOrder()">Place Order</a>
+      <a class="checkout-btn" onclick="placeOrder()">Place Order</a>
     </div>
 
     <!-- Order Items -->
@@ -81,9 +81,10 @@ $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
         </thead>
         <tbody>
           <?php foreach ($cartItems as $item): ?>
+            <?php $totalPrice += $item['price'] * $item['quantity']; ?>
             <tr>
               <td class="product-cell">
-                <img src="Assets/pictures/GIGABYTE RTX 4090.jpg" alt="RTX 4090" class="product-img">
+                <img src="<?= $item['image'] ?>" alt="<?= $item['product_name'] ?>" class="product-img">
                 <strong><?= $item['product_name'] ?></strong>
               </td>
               <td class="price-col">₱<?= number_format($item['price'], 2) ?></td>
@@ -94,6 +95,12 @@ $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
         </tbody>
       </table>
     </div>
+    <div style="display: flex; justify-content: end; margin-bottom:20px">
+      <span class="info-section" style="display: flex; align-items: center;">
+        <span style="color:#4e0b99; padding:0; font-weight: bold; font-size: 1.5rem;">Grand Total:</span>
+        <span style="font-size:1.2rem; font-weight: bold; color:darkgreen">₱<?= number_format($totalPrice, 2) ?></span>
+      </span>
+    </div>
 
     <!-- Payment Method -->
     <div class="info-section">
@@ -102,8 +109,9 @@ $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
       </div>
       <div class="payment-options">
         <button class="payment-btn active" onclick="selectPayment(this)">COD</button>
-        <button class="payment-btn disabled" onclick="selectPayment(this)">E-Wallet</button>
-        <button class="payment-btn disabled" onclick="selectPayment(this)">Credit/Debit Card</button>
+        <button class="payment-btn active" onclick="selectPayment(this)">GCash</button>
+        <button class="payment-btn active" onclick="selectPayment(this)">Maya</button>
+        <button class="payment-btn active" onclick="selectPayment(this)">Credit/Debit Card</button>
       </div>
     </div>
 
@@ -131,6 +139,38 @@ $cartItems = runQuery($pdo, $sql, [$_SESSION['user_id']], true);
       <h3>ORDER PLACED</h3>
     </div>
   </div>
+
+  <script>
+    async function placeOrder() {
+      //alerts will be later replaced with sweet alerts
+      if (paymentMethod == "") {
+        alert('Please select a payment method.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('total_price', <?= $totalPrice ?>);
+      formData.append('payment_method', paymentMethod);
+
+      try {
+        const response = await fetch('Actions/Buy/place_order.php', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        if (result.success) {
+          // Order placed successfully, redirect to order page
+          showOrderPlacedPopup();
+          setTimeout(() => {
+            window.location.href = 'order.php';
+          }, 2000);
+        } else {
+          alert('Failed to place order: ' + result.error);
+        }
+      } catch (error) {
+        alert('An error occurred: ' + error.message);
+      }
+    }
+  </script>
 
 </body>
 
